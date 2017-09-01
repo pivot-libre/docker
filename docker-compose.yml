@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  pivot:
+    build: .
+    links:
+      - db
+    ports:
+      - "8000:8000"
+  db:
+    image: mysql:5.7
+    secrets:
+      - mysql_root_password
+    environment:
+      - MYSQL_ONETIME_PASSWORD='yes'
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+      - MYSQL_DATABASE=homestead
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - db_data:/var/lib/mysql
+secrets:
+  mysql_root_password:
+    file: ./mysql/root_password.txt
+volumes:
+    db_data:
